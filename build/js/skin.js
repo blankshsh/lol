@@ -23,6 +23,7 @@ $(document).ready(function() {
         },
         success: function(data) {
             inputData_name(data);
+            //获取创建名字内容
         }
     })
     $.ajax({
@@ -33,6 +34,7 @@ $(document).ready(function() {
         },
         success: function(data) {
             inputData_per(data);
+            //获取创建属性值百分比
         }
     })
     $.ajax({
@@ -43,7 +45,7 @@ $(document).ready(function() {
             },
             //beforeSend: beforeCheck,
             success: function(data) {
-                    inputData_img(data);
+                    inputData_img(data); //创建原画图片，小头像图片
                     onclick(); //必须在创建之后再绑定onclick 不然会造成无法运行绑定事件
                 } //成功执行方法
         })
@@ -68,38 +70,42 @@ $(document).ready(function() {
             //循环创建DIV添加进页面 
         $.each(dataInt.loldata, function(key, value) {
             //console.log($(value).attr("fighter"));
-            var f_name = $('<h1 class="data-f_name">').text($(value).attr("f_name")),
-                s_name = $('<h2 class="data-s_name">').text($(value).attr("s_name"));
-            $(".skin-data").prepend(s_name).prepend(f_name);
-            var fighter_ = $(value).attr("fighter"),
-                mage_ = $(value).attr("mage"),
-                assassin_ = $(value).attr("assassin"),
-                tank_ = $(value).attr("tank"),
-                marksman_ = $(value).attr("marksman"),
-                support_ = $(value).attr("support");
-            if (fighter_ == 1) {
+            
+            var value_=$(value);
+            var f_name = $('<h1 class="data-f_name">').text(value_.attr("f_name")),
+                s_name = $('<h2 class="data-s_name">').text(value_.attr("s_name")),
+                skin_data = $(".skin-data"),
+                data_tags = $(".data-tags");
+            skin_data.prepend(s_name).prepend(f_name);
+            var fighter = value_.attr("fighter"),
+                mage = value_.attr("mage"),
+                assassin = value_.attr("assassin"),
+                tank = value_.attr("tank"),
+                marksman = value_.attr("marksman"),
+                support = value_.attr("support");
+            if (fighter == 1) {
                 var fighter_box = $("<span>").text("战士");
-                $(".data-tags").append(fighter_box);
+                data_tags.append(fighter_box);
             }
-            if (mage_ == 1) {
+            if (mage == 1) {
                 var mage_box = $("<span>").text("法师");
-                $(".data-tags").append(mage_box);
+                data_tags.append(mage_box);
             }
-            if (assassin_ == 1) {
+            if (assassin == 1) {
                 var assassin_box = $("<span>").text("刺客");
-                $(".data-tags").append(assassin_box);
+                data_tags.append(assassin_box);
             }
-            if (tank_ == 1) {
+            if (tank == 1) {
                 var tank_box = $("<span>").text("坦克");
-                $(".data-tags").append(tank_box);
+                data_tags.append(tank_box);
             }
-            if (marksman_ == 1) {
+            if (marksman == 1) {
                 var marksman_box = $("<span>").text("射手");
-                $(".data-tags").append(marksman_box);
+                data_tags.append(marksman_box);
             }
-            if (support_ == 1) {
+            if (support == 1) {
                 var support_box = $("<span>").text("辅助");
-                $(".data-tags").append(support_box);
+                data_tags.append(support_box);
             }
         })
 
@@ -120,10 +126,11 @@ $(document).ready(function() {
             //循环创建DIV添加进页面 
         $.each(dataInt.loldata, function(key, value) {
             //console.log($(value).attr("fighter"));
-            var ad = $(value).attr("ad"),
-                ap = $(value).attr("ap"),
-                tank = $(value).attr("tank"),
-                hand = $(value).attr("hand");
+            var value_=$(value);
+            var ad = value_.attr("ad"),
+                ap = value_.attr("ap"),
+                tank = value_.attr("tank"),
+                hand = value_.attr("hand");
             $(".line:first-child").find(".rate-box .rate").width(ad * 10 + "%");
             $(".line:nth-child(2)").find(".rate-box .rate").width(ap * 10 + "%");
             $(".line:nth-child(3)").find(".rate-box .rate").width(tank * 10 + "%");
@@ -150,12 +157,13 @@ $(document).ready(function() {
                 //循环创建DIV添加进页面 
 
             $.each(dataInt.loldata, function(key, value) {
+                var value_=$(value);
                 var li_box = $('<li>'),
                     span_box = $('<span>'),
                     i_box = $('<i>');
-                span_box.text($(value).attr("f_name") + " " + $(value).attr("s_name"));
-                b_img_box = $('<img src="' + $(value).attr("skin") + '">');
-                s_img_box = $('<img src="' + $(value).attr("skin_s") + '">');
+                span_box.text(value_.attr("f_name") + " " + value_.attr("s_name"));
+                b_img_box = $('<img src="' + value_.attr("skin") + '">');
+                s_img_box = $('<img src="' + value_.attr("skin_s") + '">');
 
                 $('.show-box').append(b_img_box);
                 li_box.append(span_box).append(s_img_box).append(i_box);
@@ -180,8 +188,8 @@ $(document).ready(function() {
                 $(this).siblings("i").addClass("icon-on");
                 $(this).siblings("span").addClass("skin-info-on");
                 $(".show-box").stop().animate({
-                        "margin-left": -index*980+"px"
-                    }, 500);
+                    "margin-left": -index * 980 + "px"
+                }, 500);
             })
         })
     }
