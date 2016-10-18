@@ -1,3 +1,5 @@
+// 用get获取url的元素
+// 获取英雄name
 var $_GET = (function() {
     var url = window.document.location.href.toString();
     var u = url.split("?");
@@ -15,6 +17,27 @@ var $_GET = (function() {
 })();
 
 $(document).ready(function() {
+    //创建元素
+    //生成组件
+    //插入元素
+    var skin_wrp = $('<div class="skin-wrp">'),
+        skin_info_box = $('<section class="skin-info-box">'),
+        skin_img = $('<div class="skin-img">'),
+        show_box = $('<div class="show-box">');
+    skin_info_box.css("background-color","#9E9E9E");
+    skin_img.append(show_box);
+    var skin_data = $('<div class="skin-data">'),
+        data_tags = $('<div class="data-tags cf">'),
+        data_info = $('<div class="data-info cf">');
+    //console.log(data_info);
+    skin_data.append(data_tags).append(data_info);
+    var sbg = $('<span clalss="sbg">'),
+        skin_small = $('<ul class="skin-small">');
+    skin_info_box.append(skin_img).append(skin_data).append(sbg).append(skin_small);
+    skin_wrp.append(skin_info_box);
+    $("body").append(skin_wrp);
+
+    //查询数据
     $.ajax({
         url: './build/php/name.php',
         type: 'post',
@@ -51,6 +74,9 @@ $(document).ready(function() {
         })
         // $("title").html($_GET.id);
 
+    //输出数据
+    //输出英雄FirstName SecondName EnglishName
+    //输出英雄 定位战士/法师/刺客/坦克/射手/辅助
     function inputData_name(data) {
         var dataInt = {
                 loldata: [{
@@ -70,8 +96,8 @@ $(document).ready(function() {
             //循环创建DIV添加进页面 
         $.each(dataInt.loldata, function(key, value) {
             //console.log($(value).attr("fighter"));
-            
-            var value_=$(value);
+            //创建写入数据
+            var value_ = $(value);
             var f_name = $('<h1 class="data-f_name">').text(value_.attr("f_name")),
                 s_name = $('<h2 class="data-s_name">').text(value_.attr("s_name")),
                 skin_data = $(".skin-data"),
@@ -108,9 +134,9 @@ $(document).ready(function() {
                 data_tags.append(support_box);
             }
         })
-
     }
-
+    //输出数据
+    //输出英雄 物理攻击、魔法攻击、防御能力、上手难度的值
     function inputData_per(data) {
         var dataInt = {
                 loldata: [{
@@ -126,19 +152,34 @@ $(document).ready(function() {
             //循环创建DIV添加进页面 
         $.each(dataInt.loldata, function(key, value) {
             //console.log($(value).attr("fighter"));
-            var value_=$(value);
+            var value_ = $(value);
             var ad = value_.attr("ad"),
                 ap = value_.attr("ap"),
                 tank = value_.attr("tank"),
                 hand = value_.attr("hand");
-            $(".line:first-child").find(".rate-box .rate").width(ad * 10 + "%");
-            $(".line:nth-child(2)").find(".rate-box .rate").width(ap * 10 + "%");
-            $(".line:nth-child(3)").find(".rate-box .rate").width(tank * 10 + "%");
-            $(".line:nth-child(4)").find(".rate-box .rate").width(hand * 10 + "%");
+            var name_ = $('<div class="name">'),
+                rate_box_ = $('<div class="rate-box">'),
+                data_info = $('.data-info');
+            var value_name=["物理攻击","魔法攻击","防御能力","上手难度"];
+            var value_=[ad,ap,tank,hand];
+            //循环输出战斗力数值
+            for (var i = 0; i < 4; i++) {
+                var line_ = $('<div class="cf line line' + i + '">');
+                var name_ = $('<div class="name name' + i + '">'),
+                rate_box_ = $('<div class="rate-box rate-box' + i + '">'),
+                rate_ = $('<div class="rate rate">');
+                name_.text(value_name[i]);
+                rate_.width(value_[i]*10+'%');
+                //rate_ = $('<div class="rate rate' + i + '">');
+                rate_box_.append(rate_);
+                line_.append(name_).append(rate_box_);
+                data_info.append(line_);
+                //console.log(data_info);
+            }
         })
-
     }
-
+    //输出数据
+    //输出英雄 皮肤原画、小头像、皮肤名称
     function inputData_img(data) {
         var length = data.length;
         $('.show-box').width(length * 980);
@@ -155,9 +196,8 @@ $(document).ready(function() {
                 // console.log(dataInt.loldata);
                 // console.log(dataInt.loldata[0].name);
                 //循环创建DIV添加进页面 
-
             $.each(dataInt.loldata, function(key, value) {
-                var value_=$(value);
+                var value_ = $(value);
                 var li_box = $('<li>'),
                     span_box = $('<span>'),
                     i_box = $('<i>');
@@ -176,7 +216,9 @@ $(document).ready(function() {
         find_info.find("i").addClass("icon-on");
     }
 
-
+    //绑定click事件 点击轮播皮肤
+    //不能再ready时绑定click事件
+    //必须创建元素之后再绑定click事件
     function onclick() {
         $(".skin-small li img").each(function(index) {
             $(this).on('click', function() {
@@ -193,5 +235,4 @@ $(document).ready(function() {
             })
         })
     }
-
 })
